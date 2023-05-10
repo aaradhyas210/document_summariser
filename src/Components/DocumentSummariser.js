@@ -113,6 +113,7 @@ const DocumentSummariser = () => {
 		fetch(BASE_URL + "/completion", {
 			method: "POST",
 			// body: JSON.stringify({ prompt: fileContent + question }),
+			// body: JSON.stringify({ prompt: `${fileContent}\n\nQ: ${question}\nA:` }),
 			body: JSON.stringify({ prompt: question }),
 		})
 			.then((res) => res.json())
