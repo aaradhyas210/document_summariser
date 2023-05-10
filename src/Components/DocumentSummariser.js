@@ -397,7 +397,6 @@ const AnswerSection = styled("div")({
 	minHeight: "70px",
 	padding: "20px 20px",
 	textAlign: "left",
-	whiteSpace: "pre-wrap",
 	fontFamily: "Helvetica Neue",
 	fontSize: "15px",
 	fontWeight: 350,
