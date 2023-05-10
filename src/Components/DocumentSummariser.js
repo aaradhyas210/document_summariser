@@ -88,7 +88,7 @@ const DocumentSummariser = () => {
 	const UploadFile = () => {
 		setLoading(true);
 		let formData = new FormData();
-		formData.append("video", file);
+		formData.append("newFile", file, file.name);
 		let config = {
 			onUploadProgress: function (progressEvent) {
 				var percentCompleted = Math.round(
