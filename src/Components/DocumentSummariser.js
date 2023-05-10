@@ -17,6 +17,7 @@ import axios from "axios";
 const DocumentSummariser = () => {
 	const drop = useRef(null);
 	const [file, setFile] = useState(null);
+	//eslint-disable-next-line
 	const [fileContent, setFileContent] = useState("");
 	const [question, setQuestion] = useState("");
 	const [uploadProgress, setUploadProgress] = useState(0);
@@ -52,9 +53,12 @@ const DocumentSummariser = () => {
 		drop?.current?.addEventListener("dragover", HandleDragOver);
 		drop?.current?.addEventListener("drop", HandleDrop);
 		return () => {
+			//eslint-disable-next-line
 			drop?.current?.removeEventListener("dragover", HandleDragOver);
+			//eslint-disable-next-line
 			drop?.current?.removeEventListener("drop", HandleDrop);
 		};
+		//eslint-disable-next-line
 	}, []);
 
 	const HandleDragOver = (e) => {
@@ -324,13 +328,6 @@ const RowFlexContainer = styled("div")({
 	display: "flex",
 	justifyContent: "flex-start",
 	alignItems: "center",
-});
-
-const VideoPreview = styled("video")({
-	width: "200px",
-	height: "270px",
-	objectFit: "cover",
-	borderRadius: "10px",
 });
 
 const LinearProgressBar = styled(LinearProgress)({
