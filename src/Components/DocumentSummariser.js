@@ -113,17 +113,16 @@ const DocumentSummariser = () => {
 
 	const AskQuestion = () => {
 		setAnswerLoading(true);
-		//Change url here
-		fetch(BASE_URL + "/completion", {
+		let formData = new FormData();
+		formData.append("file", file);
+		formData.append("question", question);
+		fetch("https://generativeaidev.azurewebsites.net/fileupload", {
 			method: "POST",
-			// body: JSON.stringify({ prompt: fileContent + question }),
-			// body: JSON.stringify({ prompt: `${fileContent}\n\nQ: ${question}\nA:` }),
-			body: JSON.stringify({ prompt: question }),
+			body: formData,
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				const parsedData = data?.bot;
-				setAnswer(parsedData);
+				setAnswer(data?.answer);
 				setAnswerLoading(false);
 				setShowAnswerSection(true);
 			})
