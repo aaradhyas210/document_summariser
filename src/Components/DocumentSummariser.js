@@ -9,10 +9,8 @@ import {
 } from "@mui/material";
 import Background from "../Assets/PwC_Geom_28.png";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import LinearProgress from "@mui/material/LinearProgress";
 import DescriptionIcon from "@mui/icons-material/Description";
 import SendIcon from "@mui/icons-material/Send";
-import axios from "axios";
 
 const DocumentSummariser = () => {
 	const drop = useRef(null);
@@ -20,21 +18,15 @@ const DocumentSummariser = () => {
 	//eslint-disable-next-line
 	const [fileContent, setFileContent] = useState("");
 	const [question, setQuestion] = useState("");
-	const [uploadProgress, setUploadProgress] = useState(0);
 	const [answer, setAnswer] = useState("");
 	const [uploadSuccess, setUploadSuccess] = useState(false);
-	const [loading, setLoading] = useState(false);
 	const [answerLoading, setAnswerLoading] = useState(false);
 	const [showAnswerSection, setShowAnswerSection] = useState(false);
-
-	const BASE_URL =
-		"https://main--visionary-youtiao-038df7.netlify.app/.netlify/functions/api";
 
 	const SelectFile = (e) => {
 		setFile(e.target.files[0]);
 		ReadFile(e.target.files[0]);
-		setUploadProgress(0);
-		setUploadSuccess(false);
+		setUploadSuccess(true);
 	};
 
 	const ReadFile = (file) => {
@@ -71,7 +63,6 @@ const DocumentSummariser = () => {
 		e.stopPropagation();
 		setFile(e.dataTransfer.files[0]);
 		ReadFile(e.dataTransfer.files[0]);
-		setUploadProgress(0);
 		setUploadSuccess(false);
 	};
 
@@ -83,32 +74,6 @@ const DocumentSummariser = () => {
 		if (e.key === "Enter" && !e.shiftKey) {
 			AskQuestion();
 		}
-	};
-
-	const UploadFile = () => {
-		setLoading(true);
-		let formData = new FormData();
-		formData.append("newFile", file, file.name);
-		let config = {
-			onUploadProgress: function (progressEvent) {
-				var percentCompleted = Math.round(
-					(progressEvent.loaded * 100) / progressEvent.total
-				);
-				setUploadProgress(percentCompleted);
-			},
-		};
-		//Change url here
-		axios
-			.post(BASE_URL + "/upload", formData, config)
-			.then((res) => {
-				console.log(res);
-				setUploadSuccess(true);
-				setLoading(false);
-			})
-			.catch((err) => {
-				console.log(err);
-				setLoading(false);
-			});
 	};
 
 	const AskQuestion = () => {
@@ -161,31 +126,9 @@ const DocumentSummariser = () => {
 									{Math.round(file?.size / 100000) / 10} MB
 								</UploadText>
 							</RowFlexContainer>
-							{uploadSuccess ? (
-								<LinearProgressBarSuccess
-									style={{ color: "green", width: "100%" }}
-									variant="determinate"
-									value={100}
-								/>
-							) : (
-								<LinearProgressBar
-									style={{ color: "#D93954", width: "100%" }}
-									variant="determinate"
-									value={uploadProgress}
-								/>
-							)}
 						</PreviewContainer>
 					)}
 				</FileDropZoneContainer>
-				{file !== null && !uploadSuccess && (
-					<UploadButtonContainer>
-						{loading ? (
-							<CircularProgress style={{ color: "#D93954" }} />
-						) : (
-							<UploadButton onClick={UploadFile}>Upload File</UploadButton>
-						)}
-					</UploadButtonContainer>
-				)}
 
 				{uploadSuccess && (
 					<>
@@ -327,42 +270,6 @@ const RowFlexContainer = styled("div")({
 	display: "flex",
 	justifyContent: "flex-start",
 	alignItems: "center",
-});
-
-const LinearProgressBar = styled(LinearProgress)({
-	marginTop: "10px",
-	backgroundColor: "rgba(217, 57, 84, 0.4)",
-	"& .MuiLinearProgress-barColorPrimary": {
-		backgroundColor: "#D93954",
-	},
-});
-
-const LinearProgressBarSuccess = styled(LinearProgress)({
-	marginTop: "10px",
-	backgroundColor: "rgba(217, 57, 84, 0.4)",
-	"& .MuiLinearProgress-barColorPrimary": {
-		backgroundColor: "green",
-	},
-});
-
-const UploadButtonContainer = styled("div")({
-	justifyContent: "center",
-	alignItems: "center",
-	width: "100%",
-	height: "60px",
-	marginBottom: "20px",
-});
-
-const UploadButton = styled(Button)({
-	background: "#D93954",
-	color: "#FFFFFF",
-	fontSize: "20px",
-	padding: "7px 20px",
-	borderRadius: "30px",
-	"&:hover": {
-		background: "#D93954",
-		opacity: 0.8,
-	},
 });
 
 const QuestionInput = styled(TextField)({
